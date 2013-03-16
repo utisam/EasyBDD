@@ -62,7 +62,8 @@ class DiagramNode(object):
         if compute_key in self.bdd.compute_table:
             return self.bdd.compute_table[compute_key]
         # 最も計算順序の早い変数
-        v = max(self, thenNode, elseNode, key=lambda x: x.index)
+        v = max(filter(lambda x: isinstance(x, DiagramNode), [self, thenNode, elseNode]),
+                key=lambda x: x.label)
         # 1枝側のサブグラフ
         T = self._getNextThen(v.label).ITE(thenNode._getNextThen(v.label),
                                            elseNode._getNextThen(v.label))
@@ -151,3 +152,4 @@ class BinaryDecisionDiagram(object):
             for key, value in self.unique_table.items():
                 if value.index not in visited:
                     del self.unique_table[key]
+

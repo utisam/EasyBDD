@@ -59,10 +59,23 @@ class TestBDD(unittest.TestCase):
         bdd = BDD.BinaryDecisionDiagram()
         root = bdd.apply_xnor(bdd.newVariable("x"), bdd.newVariable("y"))
         self._assertFunction(["x", "y"], root, F)
-    def testEq(self):
+    def testEq1(self):
+        def F(x, y):
+            return not (x and y)
         bdd = BDD.BinaryDecisionDiagram()
         root1 = bdd.apply_or(bdd.apply_not(bdd.newVariable("x")), bdd.apply_not(bdd.newVariable("y")))
         root2 = bdd.apply_not(bdd.apply_and(bdd.newVariable("x"), bdd.newVariable("y")))
+        root3 = bdd.apply_not(bdd.apply_and(bdd.newVariable("x"), bdd.newVariable("y")))
+        for root in (root1, root2, root3):
+            self._assertFunction(["x", "y"], root, F)
+        self.assertEqual(root1, root2)
+        self.assertEqual(root2, root3)
+    def testEq2(self):
+        bdd = BDD.BinaryDecisionDiagram()
+        x = bdd.newVariable("x")
+        y = bdd.newVariable("y")
+        root1 = bdd.apply_or(bdd.apply_and(x, bdd.apply_not(y)), bdd.apply_and(bdd.apply_not(x), y))
+        root2 = bdd.apply_xor(x, y)
         self.assertEqual(root1, root2)
 
 if __name__ == "__main__":
