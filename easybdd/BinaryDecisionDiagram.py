@@ -12,7 +12,7 @@ class TerminalNode(object):
     def __call__(self, assign):
         return self.value
     def printTree(self, visited=set(),  indent=0):
-        print "\t" * indent, self
+        print("\t" * indent, self)
     def _getNextThen(self, index):
         return self
     def _getNextElse(self, index):
@@ -43,7 +43,7 @@ class DiagramNode(object):
         else:
             return self.elseNode(assign)
     def printTree(self, visited=set(),  indent=0):
-        print "\t" * indent, self
+        print("\t" * indent, self)
 #        if self.index not in visited:
 #            visited.add(self.index)
         self.thenNode.printTree(visited, indent + 1)
@@ -62,7 +62,7 @@ class DiagramNode(object):
         if compute_key in self.bdd.compute_table:
             return self.bdd.compute_table[compute_key]
         # 最も計算順序の早い変数
-        v = max(filter(lambda x: isinstance(x, DiagramNode), [self, thenNode, elseNode]),
+        v = max([x for x in [self, thenNode, elseNode] if isinstance(x, DiagramNode)],
                 key=lambda x: x.label)
         # 1枝側のサブグラフ
         T = self._getNextThen(v.label).ITE(thenNode._getNextThen(v.label),

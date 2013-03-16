@@ -53,11 +53,11 @@ def main():
     True
     """
     parser = Parser(BDD.BinaryDecisionDiagram())
-    f = parser.parse(raw_input() + ";")
-    g = parser.parse(raw_input() + ";")
+    f = parser.parse(input() + ";")
+    g = parser.parse(input() + ";")
     f.printTree()
     g.printTree()
-    print f == g
+    print(f == g)
 
 if __name__ == '__main__':
     main()
