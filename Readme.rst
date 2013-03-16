@@ -4,6 +4,11 @@ Easy BDD
 
 Binary Decision Diagram package.
 
+What is BDD
+================
+
+BDD is a data structure which is used to represent a boolean function.
+
 How to use
 ================
 
@@ -47,6 +52,9 @@ How to use
     >>> # evaluate function
     ... root1({"x": True, "y": False})
     True
+    >>> 
+    >>> # remove the nodes which is not referred to.
+    ... bdd.gc()
 
 Parser
 ========
