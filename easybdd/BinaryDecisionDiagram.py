@@ -58,7 +58,7 @@ class DiagramNode(object):
         return self
     def ITE(self, thenNode, elseNode):
         # 計算済みなら計算したサブグラフを返す
-        compute_key = (self.label, thenNode.index, elseNode.index)
+        compute_key = (self.index, thenNode.index, elseNode.index)
         if compute_key in self.bdd.compute_table:
             return self.bdd.compute_table[compute_key]
         # 最も計算順序の早い変数
@@ -99,6 +99,7 @@ class BinaryDecisionDiagram(object):
     termFalse = TerminalNode(False)
     def __init__(self):
         self.unique_table = {}
+        self.compute_table = {}
         self.variable_counter = 2
         self.last = None
     def newVariable(self, label):
@@ -110,37 +111,30 @@ class BinaryDecisionDiagram(object):
         self.unique_table[unique_key] = self.last
         return self.last
     def apply_not(self, a):
-        self.compute_table = {}
         res = a.ITE(self.termFalse, self.termTrue)
         self.last = res
         return res
     def apply_and(self, a, b):
-        self.compute_table = {}
         res = a.ITE(b, self.termFalse)
         self.last = res
         return res
     def apply_nand(self, a, b):
-        self.compute_table = {}
         res = a.ITE(self.apply_not(b), self.termTrue)
         self.last = res
         return res
     def apply_or(self, a, b):
-        self.compute_table = {}
         res = a.ITE(self.termTrue, b)
         self.last = res
         return res
     def apply_nor(self, a, b):
-        self.compute_table = {}
         res = a.ITE(self.termFalse, self.apply_not(b))
         self.last = res
         return res
     def apply_xor(self, a, b):
-        self.compute_table = {}
         res = a.ITE(self.apply_not(b), b)
         self.last = res
         return res
     def apply_xnor(self, a, b):
-        self.compute_table = {}
         res = a.ITE(b, self.apply_not(b))
         self.last = res
         return res

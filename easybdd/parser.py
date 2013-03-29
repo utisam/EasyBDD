@@ -4,7 +4,7 @@ Created on 2013/03/17
 
 @author: utisam
 '''
-import BinaryDecisionDiagram as BDD
+from . import BinaryDecisionDiagram as BDD
 
 class Parser(object):
     def __init__(self, bdd):
@@ -14,6 +14,12 @@ class Parser(object):
         self.index = 0
         return self.expression()
     def variable(self):
+        if self.expr[self.index] == 'T':
+            self.index += 1
+            return self.bdd.termTrue
+        if self.expr[self.index] == 'F':
+            self.index += 1
+            return self.bdd.termFalse
         begin = self.index
         while self.expr[self.index].isalpha():
             self.index += 1
